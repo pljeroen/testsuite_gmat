@@ -1,0 +1,32 @@
+# Personal workflow files
+.tddv6/
+CLAUDE.md
+SESSION_HANDOFF*.md
+.hypothesis/
+.claude/
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.env
+.env.*
+*.pem
+*.key
+
+# Local GMAT runtime artifacts (kept outside git)
+GMAT/
+gmat-ubuntu-x64-R2025a.tar.gz
+launch-gmat.sh
+.gmat-sandbox/
+
+# Local orchestration lab (explicitly local-only)
+.gmat-lab/

@@ -1,0 +1,31 @@
+{
+  "run_id": "run-0003-unborn-dirty",
+  "run_number": 3,
+  "timestamp_utc": "2026-02-16T21:36:17.841044+00:00",
+  "tier": "tier2",
+  "case_filter": null,
+  "git": {
+    "state": "repo",
+    "commit": "unborn",
+    "dirty": "dirty",
+    "label": "unborn-dirty"
+  },
+  "cases": [
+    {
+      "case": "celestrak_fetch_active_tle",
+      "returncode": 0,
+      "path": "/home/jeroen/gmat/docs/test-runs/run-0003-unborn-dirty/cases/celestrak_fetch_active_tle"
+    },
+    {
+      "case": "sgp4_propagation_active",
+      "returncode": 0,
+      "path": "/home/jeroen/gmat/docs/test-runs/run-0003-unborn-dirty/cases/sgp4_propagation_active"
+    },
+    {
+      "case": "conjunction_screening_heuristic",
+      "returncode": 0,
+      "path": "/home/jeroen/gmat/docs/test-runs/run-0003-unborn-dirty/cases/conjunction_screening_heuristic"
+    }
+  ],
+  "failures": 0
+}

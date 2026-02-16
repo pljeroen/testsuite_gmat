@@ -1,0 +1,39 @@
+% Headless-safe eclipse location scenario
+
+Create Spacecraft GEOSat;
+GMAT GEOSat.NAIFId = -899;
+GMAT GEOSat.NAIFIdReferenceFrame = -8990;
+
+Create ForceModel DefaultProp_ForceModel;
+Create Propagator DefaultProp;
+GMAT DefaultProp.FM = DefaultProp_ForceModel;
+
+Create EclipseLocator EclipseLocator1;
+GMAT EclipseLocator1.Spacecraft = GEOSat;
+GMAT EclipseLocator1.Filename = 'EclipseLocator1.txt';
+GMAT EclipseLocator1.OccultingBodies = {Earth, Luna, Mercury, Venus};
+GMAT EclipseLocator1.InputEpochFormat = 'TAIModJulian';
+GMAT EclipseLocator1.InitialEpoch = '21545';
+GMAT EclipseLocator1.StepSize = 120;
+GMAT EclipseLocator1.FinalEpoch = '21545.138';
+GMAT EclipseLocator1.UseLightTimeDelay = true;
+GMAT EclipseLocator1.UseStellarAberration = true;
+GMAT EclipseLocator1.WriteReport = true;
+GMAT EclipseLocator1.RunMode = Automatic;
+GMAT EclipseLocator1.UseEntireInterval = true;
+GMAT EclipseLocator1.EclipseTypes = {'Umbra', 'Penumbra', 'Antumbra'};
+
+BeginMissionSequence;
+
+BeginScript 'Config and Init'
+   GMAT GEOSat.DateFormat = UTCGregorian;
+   GMAT GEOSat.Epoch = '22 Aug 2015 00:00:00.000';
+   GMAT GEOSat.SMA = 42165.52841001855;
+   GMAT GEOSat.ECC = 0.0001016372703183695;
+   GMAT GEOSat.INC = 28.22038171126684;
+   GMAT GEOSat.RAAN = 152.4975046294811;
+   GMAT GEOSat.AOP = 172.7618673633059;
+   GMAT GEOSat.TA = 242.5561749993354;
+EndScript;
+
+Propagate DefaultProp(GEOSat) {GEOSat.ElapsedDays = 10};

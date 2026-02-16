@@ -1,0 +1,50 @@
+% Advanced scenario: secular RAAN drift under Earth J2 perturbation
+
+Create Spacecraft Sat
+Sat.DateFormat = UTCGregorian
+Sat.Epoch = '01 Jan 2024 00:00:00.000'
+Sat.CoordinateSystem = EarthMJ2000Eq
+Sat.DisplayStateType = Keplerian
+Sat.SMA = 7000
+Sat.ECC = 0.001
+Sat.INC = 97.8
+Sat.RAAN = 20
+Sat.AOP = 15
+Sat.TA = 25
+
+Create ForceModel FM
+FM.CentralBody = Earth
+FM.PrimaryBodies = {Earth}
+FM.Drag = None
+FM.SRP = Off
+FM.ErrorControl = RSSStep
+FM.GravityField.Earth.Degree = 2
+FM.GravityField.Earth.Order = 0
+FM.GravityField.Earth.PotentialFile = 'JGM2.cof'
+FM.GravityField.Earth.TideModel = 'None'
+
+Create Propagator Prop
+Prop.FM = FM
+Prop.Type = PrinceDormand78
+Prop.InitialStepSize = 30
+Prop.Accuracy = 1e-12
+Prop.MinStep = 0
+Prop.MaxStep = 120
+Prop.MaxStepAttempts = 50
+Prop.StopIfAccuracyIsViolated = true
+
+Create Variable startRAAN endRAAN startINC endINC startECC endECC
+Create ReportFile RF
+RF.Filename = 'advanced_j2_raan_drift_results.txt'
+RF.Precision = 16
+RF.WriteHeaders = true
+
+BeginMissionSequence
+startRAAN = Sat.RAAN
+startINC = Sat.INC
+startECC = Sat.ECC
+Propagate Prop(Sat) {Sat.ElapsedDays = 7}
+endRAAN = Sat.RAAN
+endINC = Sat.INC
+endECC = Sat.ECC
+Report RF startRAAN startINC startECC endRAAN endINC endECC Sat.ElapsedDays

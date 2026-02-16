@@ -1,0 +1,50 @@
+% Advanced scenario: 'Oumuamua-inspired heliocentric hyperbolic trajectory
+
+Create CoordinateSystem SunEcliptic
+SunEcliptic.Origin = Sun
+SunEcliptic.Axes = MJ2000Ec
+
+Create Spacecraft Oumuamua
+Oumuamua.DateFormat = UTCGregorian
+Oumuamua.Epoch = '01 Jan 2018 00:00:00.000'
+Oumuamua.CoordinateSystem = SunEcliptic
+Oumuamua.DisplayStateType = Keplerian
+Oumuamua.SMA = -130000000
+Oumuamua.ECC = 1.20
+Oumuamua.INC = 122.74
+Oumuamua.RAAN = 24.60
+Oumuamua.AOP = 241.70
+Oumuamua.TA = 40
+
+Create ForceModel FM
+FM.CentralBody = Sun
+FM.PointMasses = {Jupiter, Earth, Mars}
+FM.Drag = None
+FM.SRP = Off
+FM.ErrorControl = RSSStep
+
+Create Propagator Prop
+Prop.FM = FM
+Prop.Type = PrinceDormand78
+Prop.InitialStepSize = 3600
+Prop.Accuracy = 1e-12
+Prop.MinStep = 0
+Prop.MaxStep = 86400
+Prop.MaxStepAttempts = 50
+Prop.StopIfAccuracyIsViolated = true
+
+Create Variable startECC endECC startINC endINC startRMAG endRMAG
+Create ReportFile RF
+RF.Filename = 'advanced_oumuamua_hyperbolic_results.txt'
+RF.Precision = 16
+RF.WriteHeaders = true
+
+BeginMissionSequence
+startECC = Oumuamua.ECC
+startINC = Oumuamua.INC
+startRMAG = Oumuamua.Sun.RMAG
+Propagate Prop(Oumuamua) {Oumuamua.ElapsedDays = 120}
+endECC = Oumuamua.ECC
+endINC = Oumuamua.INC
+endRMAG = Oumuamua.Sun.RMAG
+Report RF startECC startINC startRMAG endECC endINC endRMAG Oumuamua.ElapsedDays
