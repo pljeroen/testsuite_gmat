@@ -29,10 +29,21 @@ def _git_info() -> dict[str, str]:
     rc, commit = _capture(["git", "rev-parse", "--short", "HEAD"])
     commit_label = commit if rc == 0 and commit else "unborn"
 
-    rc, status = _capture(["git", "status", "--porcelain"])
+    # Ignore generated run artifacts so labels reflect source/config state.
+    rc, status = _capture(["git", "status", "--porcelain", "--", ".", ":(exclude)docs/test-runs"])
     dirty = "dirty" if status else "clean"
 
     return {"state": "repo", "commit": commit_label, "dirty": dirty, "label": f"{commit_label}-{dirty}"}
+
+
+def _ensure_clean_repo_for_runs() -> None:
+    info = _git_info()
+    if info["dirty"] != "clean":
+        print(
+            "ERROR: refusing to run tests with dirty source/config state. "
+            "Commit or stash changes first."
+        )
+        raise SystemExit(2)
 
 
 def _create_run_snapshot(tier: str, case_filter: str | None) -> tuple[Path, dict]:
@@ -167,6 +178,7 @@ def main() -> int:
     parser.add_argument("--tier", choices=["tier1", "tier2"], default="tier1")
     parser.add_argument("--case", default=None)
     args = parser.parse_args()
+    _ensure_clean_repo_for_runs()
     run_dir, run_meta = _create_run_snapshot(args.tier, args.case)
     print(f"run_snapshot={run_dir}")
 

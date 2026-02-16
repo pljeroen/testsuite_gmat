@@ -1,2 +1,0 @@
-startSMA                  startECC                  startRMAG                 endSMA                    endECC                    endRMAG                   Sat.ElapsedSecs           
-6999.999999999997         0.0009999999999995535     6993                      6999.999999999777         0.001000000000006574      6993.735078576089         5400.000000314321         

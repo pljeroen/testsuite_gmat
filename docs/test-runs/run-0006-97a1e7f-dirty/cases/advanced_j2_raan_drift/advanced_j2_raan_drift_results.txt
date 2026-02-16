@@ -1,2 +1,0 @@
-startRAAN                 startINC                  startECC                  endRAAN                   endINC                    endECC                    Sat.ElapsedDays           
-20.00000000000001         97.8                      0.001000000000000226      26.80548074604882         97.82023563673485         0.001578223818606747      7                         
