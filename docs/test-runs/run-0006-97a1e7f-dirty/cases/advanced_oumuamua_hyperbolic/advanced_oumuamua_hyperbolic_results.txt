@@ -1,0 +1,2 @@
+startECC                  startINC                  startRMAG                 endECC                    endINC                    endRMAG                   Oumuamua.ElapsedDays      
+5338405.65452878          33.81974332291281         29803256.84679659         7664919.746223633         19.07508870024755         1044481242.397864         119.9999999999964         

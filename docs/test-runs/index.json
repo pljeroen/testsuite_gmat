@@ -1,5 +1,5 @@
 {
-  "next_run": 6,
+  "next_run": 8,
   "runs": [
     {
       "run_id": "run-0001-unborn-dirty",
@@ -40,6 +40,22 @@
       "tier": "tier2",
       "case_filter": null,
       "git_label": "a9fe5c8-dirty"
+    },
+    {
+      "run_id": "run-0006-97a1e7f-dirty",
+      "run_number": 6,
+      "timestamp_utc": "2026-02-16T21:46:45.146777+00:00",
+      "tier": "tier1",
+      "case_filter": null,
+      "git_label": "97a1e7f-dirty"
+    },
+    {
+      "run_id": "run-0007-97a1e7f-dirty",
+      "run_number": 7,
+      "timestamp_utc": "2026-02-16T21:49:07.960224+00:00",
+      "tier": "tier2",
+      "case_filter": null,
+      "git_label": "97a1e7f-dirty"
     }
   ]
 }

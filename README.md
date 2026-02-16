@@ -1,6 +1,10 @@
-# gmat
+# GMAT Test Suite
 
-Python test harness for validating a local NASA GMAT installation.
+[![CI](https://github.com/pljeroen/testsuite_gmat/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/pljeroen/testsuite_gmat/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
+
+Python test suite for validating local NASA GMAT behavior in reproducible, headless runs.
 
 ## Scope
 
@@ -8,20 +12,33 @@ Python test harness for validating a local NASA GMAT installation.
 - Runs tests against the local GMAT binary in a contained temp workspace.
 - Uses a hexagonal layout (`domain`, `ports`, `adapters`) for test execution flow.
 
-## Local layout assumptions
+## Local Layout Assumptions
 
 - GMAT is extracted under `./GMAT/R2025a`.
-- Main binary is `./GMAT/R2025a/bin/GMAT-R2025a`.
+- Headless binary is `./GMAT/R2025a/bin/GmatConsole`.
 
 These files are intentionally excluded from version control.
 
-## Quick start
+## Quick Start
 
 ```bash
-python3 -m venv venv
-source venv/bin/activate
-pip install -e .[test]
-pytest -q
+git clone git@github.com:pljeroen/testsuite_gmat.git
+cd testsuite_gmat
+./scripts/bootstrap.sh
+./scripts/run-tests.sh --all
+```
+
+What `bootstrap.sh` does:
+
+- Creates `venv/`
+- Installs Python dependencies
+- Downloads/extracts GMAT R2025a if missing
+- Applies local GMAT compatibility setup used by this repo
+
+Run unit-only checks (same scope as CI):
+
+```bash
+./scripts/run-tests.sh --unit-only
 ```
 
 ## Configuration
@@ -45,8 +62,25 @@ artifacts.
 Run only scenario integrations:
 
 ```bash
-pytest -q -m integration
+./scripts/run-tests.sh --integration
 ```
+
+## Local Run Archives
+
+Local orchestration in `.gmat-lab/` can archive run outputs to `docs/test-runs/` using:
+
+```bash
+source venv/bin/activate
+python3 .gmat-lab/bin/run_case.py --tier tier1
+python3 .gmat-lab/bin/run_case.py --tier tier2
+```
+
+Each run snapshot includes:
+
+- Incrementing run number
+- Git commit short hash
+- Dirty/clean workspace state
+- Per-case stdout/stderr/log/report artifacts
 
 ## Notes
 

@@ -6,8 +6,15 @@ build-backend = "setuptools.build_meta"
 name = "gmat-tests"
 version = "0.1.0"
 description = "Contained Python test harness for local NASA GMAT binaries"
+readme = "README.md"
 requires-python = ">=3.9"
-license = {text = "Apache-2.0"}
+license = {text = "MIT"}
+authors = [{name = "GMAT Test Suite Contributors"}]
+
+[project.urls]
+Homepage = "https://github.com/pljeroen/testsuite_gmat"
+Repository = "https://github.com/pljeroen/testsuite_gmat"
+Issues = "https://github.com/pljeroen/testsuite_gmat/issues"
 
 [project.optional-dependencies]
 test = ["pytest>=7.0", "pytest-cov", "hypothesis"]

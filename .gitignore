@@ -29,4 +29,8 @@ launch-gmat.sh
 .gmat-sandbox/
 
 # Local orchestration lab (explicitly local-only)
-.gmat-lab/
+.gmat-lab/cache/
+.gmat-lab/outputs/
+.gmat-lab/tmp/
+.gmat-lab/scenarios/
+.gmat-lab/**/__pycache__/

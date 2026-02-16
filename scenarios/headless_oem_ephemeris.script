@@ -1,7 +1,7 @@
 % Headless-safe OEM ephemeris propagation + report
 
 Create Spacecraft EphSat;
-EphSat.EphemerisName = '/home/jeroen/gmat/GMAT/R2025a/data/vehicle/ephem/ccsds/SampleOEMEphem.oem';
+EphSat.EphemerisName = 'SampleOEMEphem.oem';
 
 Create Propagator EphProp;
 EphProp.Type     = 'CCSDS-OEM';

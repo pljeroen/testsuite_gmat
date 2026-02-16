@@ -1,0 +1,27 @@
+{
+  "tier": "tier2",
+  "description": "Free public-data extensions with local processing.",
+  "cases": [
+    {
+      "id": "celestrak_fetch_active_tle",
+      "type": "python_command",
+      "command": "python3 .gmat-lab/bin/fetch_celestrak.py --group active",
+      "outputs": [".gmat-lab/cache/celestrak_active.tle"],
+      "tags": ["celestrak", "tle", "free_data"]
+    },
+    {
+      "id": "sgp4_propagation_active",
+      "type": "python_command",
+      "command": "python3 .gmat-lab/bin/propagate_tle_sgp4.py --input .gmat-lab/cache/celestrak_active.tle --hours 24",
+      "outputs": [".gmat-lab/outputs/sgp4_propagation.csv"],
+      "tags": ["sgp4", "propagation", "free_data"]
+    },
+    {
+      "id": "conjunction_screening_heuristic",
+      "type": "python_command",
+      "command": "python3 .gmat-lab/bin/screen_conjunctions.py --input .gmat-lab/outputs/sgp4_propagation.csv --threshold-km 5",
+      "outputs": [".gmat-lab/outputs/conjunction_flags.csv"],
+      "tags": ["conjunction", "heuristic", "free_data"]
+    }
+  ]
+}

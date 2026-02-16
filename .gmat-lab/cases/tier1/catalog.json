@@ -1,0 +1,56 @@
+{
+  "tier": "tier1",
+  "description": "Native GMAT scenarios with local binaries and local data only.",
+  "cases": [
+    {
+      "id": "basic_leo_two_body",
+      "type": "gmat_script",
+      "script": "scenarios/basic_leo_two_body.script",
+      "expected_report": "basic_leo_two_body_results.txt",
+      "tags": ["propagation", "keplerian", "numerical"]
+    },
+    {
+      "id": "advanced_j2_raan_drift",
+      "type": "gmat_script",
+      "script": "scenarios/advanced_j2_raan_drift.script",
+      "expected_report": "advanced_j2_raan_drift_results.txt",
+      "tags": ["j2", "secular_effects", "numerical"]
+    },
+    {
+      "id": "advanced_oumuamua_hyperbolic",
+      "type": "gmat_script",
+      "script": "scenarios/advanced_oumuamua_hyperbolic.script",
+      "expected_report": "advanced_oumuamua_hyperbolic_results.txt",
+      "tags": ["hyperbolic", "interstellar", "golden_reference"]
+    },
+    {
+      "id": "sample_hohmann_transfer",
+      "type": "gmat_script",
+      "script": "GMAT/R2025a/samples/Ex_HohmannTransfer.script",
+      "expected_report": null,
+      "tags": ["maneuver", "hohmann", "targeting"]
+    },
+    {
+      "id": "headless_eclipse_locator",
+      "type": "gmat_script",
+      "script": "scenarios/headless_eclipse_locator.script",
+      "expected_report": "EclipseLocator1.txt",
+      "tags": ["eclipse", "event_location"]
+    },
+    {
+      "id": "sample_contact_locator",
+      "type": "gmat_script",
+      "script": "GMAT/R2025a/samples/Ex_R2015a_StationContactLocator.script",
+      "expected_report": "ContactLocator1.txt",
+      "tags": ["access_windows", "ground_contact"]
+    },
+    {
+      "id": "headless_oem_ephemeris_propagation",
+      "type": "gmat_script",
+      "script": "scenarios/headless_oem_ephemeris.script",
+      "expected_report": "KeplerianElements.txt",
+      "data_files": ["GMAT/R2025a/data/vehicle/ephem/ccsds/SampleOEMEphem.oem"],
+      "tags": ["ephemeris", "propagation", "time_systems"]
+    }
+  ]
+}

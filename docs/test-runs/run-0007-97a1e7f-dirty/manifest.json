@@ -1,0 +1,31 @@
+{
+  "run_id": "run-0007-97a1e7f-dirty",
+  "run_number": 7,
+  "timestamp_utc": "2026-02-16T21:49:07.960224+00:00",
+  "tier": "tier2",
+  "case_filter": null,
+  "git": {
+    "state": "repo",
+    "commit": "97a1e7f",
+    "dirty": "dirty",
+    "label": "97a1e7f-dirty"
+  },
+  "cases": [
+    {
+      "case": "celestrak_fetch_active_tle",
+      "returncode": 0,
+      "path": "/home/jeroen/gmat/docs/test-runs/run-0007-97a1e7f-dirty/cases/celestrak_fetch_active_tle"
+    },
+    {
+      "case": "sgp4_propagation_active",
+      "returncode": 0,
+      "path": "/home/jeroen/gmat/docs/test-runs/run-0007-97a1e7f-dirty/cases/sgp4_propagation_active"
+    },
+    {
+      "case": "conjunction_screening_heuristic",
+      "returncode": 0,
+      "path": "/home/jeroen/gmat/docs/test-runs/run-0007-97a1e7f-dirty/cases/conjunction_screening_heuristic"
+    }
+  ],
+  "failures": 0
+}
