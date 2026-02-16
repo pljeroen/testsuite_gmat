@@ -1,0 +1,39 @@
+GMAT Build Date: Apr  9 2025 15:51:05
+
+GMAT Log file set to /home/jeroen/gmat/.gmat-lab/tmp/headless_eclipse_locator-98u41g9h/gmat.log
+The log file mode is create
+Moderator is updating data files...
+Moderator is creating core engine...
+Skipping "/home/jeroen/gmat/GMAT/R2025a/plugins/libOpenFramesInterface": GUI plugins are skipped in console mode
+Successfully set Planetary Source to use: DE405
+Successfully set Planetary Source to use: DE405
+Successfully set Planetary Source to use: DE405
+Setting nutation file to /home/jeroen/gmat/GMAT/R2025a/data/planetary_coeff/NUTATION.DAT
+Setting leap seconds file to /home/jeroen/gmat/GMAT/R2025a/data/time/tai-utc.dat
+2026-02-16 22:36:52 GMAT Moderator successfully created core engine
+
+Interpreting scripts from the file.
+***** file: /home/jeroen/gmat/.gmat-lab/tmp/headless_eclipse_locator-98u41g9h/headless_eclipse_locator.script
+Successfully set Planetary Source to use: DE405
+Successfully set Planetary Source to use: DE405
+Successfully interpreted the script
+Running mission...
+Successfully set Planetary Source to use: DE405
+Successfully set Planetary Source to use: DE405
+Kernel /home/jeroen/gmat/GMAT/R2025a/data/planetary_ephem/spk/DE405AllPlanets.bsp has been loaded.
+Kernel /home/jeroen/gmat/GMAT/R2025a/data/planetary_coeff/SPICEPlanetaryConstantsKernel.tpc has been loaded.
+Kernel /home/jeroen/gmat/GMAT/R2025a/data/time/SPICELeapSecondKernel.tls has been loaded.
+Kernel /home/jeroen/gmat/GMAT/R2025a/data/planetary_coeff/SPICEEarthPredictedKernel.bpc has been loaded.
+Kernel /home/jeroen/gmat/GMAT/R2025a/data/planetary_coeff/SPICEEarthCurrentKernel.bpc has been loaded.
+Kernel /home/jeroen/gmat/GMAT/R2025a/data/planetary_coeff/earth_latest_high_prec.bpc has been loaded.
+Kernel /home/jeroen/gmat/GMAT/R2025a/data/planetary_coeff/SPICELunaCurrentKernel.bpc has been loaded.
+Kernel /home/jeroen/gmat/GMAT/R2025a/data/planetary_coeff/SPICELunaFrameKernel.tf has been loaded.
+Kernel /tmp/tmp_GEOSat_1771277812_320773.bsp has been loaded.
+Finding events for EclipseLocator EclipseLocator1 ...
+Celestial body properties are provided by SPICE kernels.
+
+Mission run completed.
+===> Total Run Time: 1.590 seconds
+
+========================================
+Moderator is deleting core engine...

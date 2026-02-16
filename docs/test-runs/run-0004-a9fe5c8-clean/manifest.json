@@ -1,0 +1,51 @@
+{
+  "run_id": "run-0004-a9fe5c8-clean",
+  "run_number": 4,
+  "timestamp_utc": "2026-02-16T21:36:51.210406+00:00",
+  "tier": "tier1",
+  "case_filter": null,
+  "git": {
+    "state": "repo",
+    "commit": "a9fe5c8",
+    "dirty": "clean",
+    "label": "a9fe5c8-clean"
+  },
+  "cases": [
+    {
+      "case": "basic_leo_two_body",
+      "returncode": 0,
+      "path": "/home/jeroen/gmat/docs/test-runs/run-0004-a9fe5c8-clean/cases/basic_leo_two_body"
+    },
+    {
+      "case": "advanced_j2_raan_drift",
+      "returncode": 0,
+      "path": "/home/jeroen/gmat/docs/test-runs/run-0004-a9fe5c8-clean/cases/advanced_j2_raan_drift"
+    },
+    {
+      "case": "advanced_oumuamua_hyperbolic",
+      "returncode": 0,
+      "path": "/home/jeroen/gmat/docs/test-runs/run-0004-a9fe5c8-clean/cases/advanced_oumuamua_hyperbolic"
+    },
+    {
+      "case": "sample_hohmann_transfer",
+      "returncode": 0,
+      "path": "/home/jeroen/gmat/docs/test-runs/run-0004-a9fe5c8-clean/cases/sample_hohmann_transfer"
+    },
+    {
+      "case": "headless_eclipse_locator",
+      "returncode": 0,
+      "path": "/home/jeroen/gmat/docs/test-runs/run-0004-a9fe5c8-clean/cases/headless_eclipse_locator"
+    },
+    {
+      "case": "sample_contact_locator",
+      "returncode": 0,
+      "path": "/home/jeroen/gmat/docs/test-runs/run-0004-a9fe5c8-clean/cases/sample_contact_locator"
+    },
+    {
+      "case": "headless_oem_ephemeris_propagation",
+      "returncode": 0,
+      "path": "/home/jeroen/gmat/docs/test-runs/run-0004-a9fe5c8-clean/cases/headless_oem_ephemeris_propagation"
+    }
+  ],
+  "failures": 0
+}
