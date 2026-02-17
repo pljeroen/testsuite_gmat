@@ -1,0 +1,31 @@
+{
+  "run_id": "run-0010-f53e60b-clean",
+  "run_number": 10,
+  "timestamp_utc": "2026-02-17T00:36:11.377426+00:00",
+  "tier": "tier2",
+  "case_filter": null,
+  "git": {
+    "state": "repo",
+    "commit": "f53e60b",
+    "dirty": "clean",
+    "label": "f53e60b-clean"
+  },
+  "cases": [
+    {
+      "case": "celestrak_fetch_active_tle",
+      "returncode": 0,
+      "path": "/home/jeroen/gmat/docs/test-runs/run-0010-f53e60b-clean/cases/celestrak_fetch_active_tle"
+    },
+    {
+      "case": "sgp4_propagation_active",
+      "returncode": 0,
+      "path": "/home/jeroen/gmat/docs/test-runs/run-0010-f53e60b-clean/cases/sgp4_propagation_active"
+    },
+    {
+      "case": "conjunction_screening_heuristic",
+      "returncode": 0,
+      "path": "/home/jeroen/gmat/docs/test-runs/run-0010-f53e60b-clean/cases/conjunction_screening_heuristic"
+    }
+  ],
+  "failures": 0
+}
