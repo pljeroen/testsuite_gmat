@@ -54,6 +54,12 @@ Scenario scripts are in `scenarios/` and are executed headlessly with `GmatConso
 - `advanced_j2_raan_drift.script`
 - `advanced_oumuamua_hyperbolic.script`
 
+Expanded integration coverage also validates:
+
+- `GMAT/R2025a/samples/Ex_HohmannTransfer.script` (sample mission completion)
+- `scenarios/headless_oem_ephemeris.script` (OEM propagation report generation)
+- `scenarios/headless_eclipse_locator.script` (event report non-empty)
+
 The test harness generates a contained startup file per run, redirects GMAT
 output into the sandbox directory, and validates results from GMAT `ReportFile`
 artifacts.
@@ -63,6 +69,18 @@ Run only scenario integrations:
 ```bash
 ./scripts/run-tests.sh --integration
 ```
+
+## Cross-Suite Baseline Export
+
+Generate a normalized baseline payload from a local archived run:
+
+```bash
+python3 scripts/export_humeris_compare_baseline.py \
+  --run-dir docs/test-runs/run-0008-3b5fc7b-clean \
+  --out docs/interop/humeris_compare_baseline.json
+```
+
+This payload is used to compare GMAT run outputs with Humeris parity artifacts.
 
 ## Local Run Archives
 
