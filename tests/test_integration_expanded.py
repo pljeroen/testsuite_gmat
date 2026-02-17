@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import shutil
 from pathlib import Path
 
 import pytest
@@ -13,7 +14,7 @@ def _repo_root() -> Path:
     return Path(__file__).resolve().parents[1]
 
 
-def _run_script(script_path: Path) -> tuple[str, str, Path]:
+def _run_script(script_path: Path, extra_assets: list[Path] | None = None) -> tuple[str, str, Path]:
     gmat_bin = resolve_gmat_bin()
     if not gmat_bin.exists():
         pytest.skip(f"GMAT binary not found at {gmat_bin}")
@@ -21,6 +22,8 @@ def _run_script(script_path: Path) -> tuple[str, str, Path]:
     runner = SubprocessGmatRunner(gmat_bin=gmat_bin, compat_lib_dir=resolve_compat_lib_dir())
     sandbox = runner.create_contained_workdir(resolve_test_sandbox())
     staged = prepare_script_in_workdir(script_path, sandbox)
+    for asset in extra_assets or []:
+        shutil.copy2(asset, sandbox / asset.name)
     result = runner.run(GmatExecutionRequest(script_path=staged, work_dir=sandbox))
     assert result.returncode == 0, f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
     return result.stdout, result.stderr, sandbox
@@ -36,7 +39,8 @@ def test_sample_hohmann_transfer_completes():
 @pytest.mark.integration
 def test_headless_oem_ephemeris_generates_report_rows():
     script = _repo_root() / "scenarios/headless_oem_ephemeris.script"
-    _stdout, _stderr, sandbox = _run_script(script)
+    sample_oem = _repo_root() / "GMAT/R2025a/data/vehicle/ephem/ccsds/SampleOEMEphem.oem"
+    _stdout, _stderr, sandbox = _run_script(script, extra_assets=[sample_oem])
     report = sandbox / "KeplerianElements.txt"
     assert report.exists()
     lines = [ln for ln in report.read_text(encoding="utf-8").splitlines() if ln.strip()]
