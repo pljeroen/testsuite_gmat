@@ -1,0 +1,61 @@
+% Stress scenario S3: SRP + penumbra at GEO
+% Targets: Humeris no-albedo cannonball SRP, step-function penumbra, RK4 drift
+% GEO orbit near equinox for eclipse season, large solar array
+
+Create Spacecraft Sat
+Sat.DateFormat = UTCGregorian
+Sat.Epoch = '20 Mar 2024 00:00:00.000'
+Sat.CoordinateSystem = EarthMJ2000Eq
+Sat.DisplayStateType = Keplerian
+Sat.SMA = 42164.0
+Sat.ECC = 0.0001
+Sat.INC = 0.05
+Sat.RAAN = 0
+Sat.AOP = 0
+Sat.TA = 0
+Sat.DryMass = 2000
+Sat.Cr = 1.4
+Sat.SRPArea = 30
+Sat.Cd = 2.2
+Sat.DragArea = 1
+
+Create ForceModel FM
+FM.CentralBody = Earth
+FM.PrimaryBodies = {Earth}
+FM.PointMasses = {Sun, Luna}
+FM.Drag = None
+FM.SRP = On
+FM.ErrorControl = RSSStep
+FM.GravityField.Earth.Degree = 4
+FM.GravityField.Earth.Order = 4
+FM.GravityField.Earth.PotentialFile = 'JGM2.cof'
+FM.GravityField.Earth.TideModel = 'None'
+FM.SRP.Flux = 1367
+FM.SRP.SRPModel = Spherical
+FM.SRP.Nominal_Sun = 149597870.691
+
+Create Propagator Prop
+Prop.FM = FM
+Prop.Type = PrinceDormand78
+Prop.InitialStepSize = 60
+Prop.Accuracy = 1e-12
+Prop.MinStep = 0
+Prop.MaxStep = 600
+Prop.MaxStepAttempts = 50
+Prop.StopIfAccuracyIsViolated = true
+
+Create Variable startSMA endSMA startECC endECC startRMAG endRMAG
+Create ReportFile RF
+RF.Filename = 'stress_srp_geo_long_duration_results.txt'
+RF.Precision = 16
+RF.WriteHeaders = true
+
+BeginMissionSequence
+startSMA = Sat.Earth.SMA
+startECC = Sat.Earth.ECC
+startRMAG = Sat.Earth.RMAG
+Propagate Prop(Sat) {Sat.ElapsedDays = 60}
+endSMA = Sat.Earth.SMA
+endECC = Sat.Earth.ECC
+endRMAG = Sat.Earth.RMAG
+Report RF startSMA endSMA startECC endECC startRMAG endRMAG Sat.ElapsedDays

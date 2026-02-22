@@ -20,6 +20,61 @@ def _read_last_numeric_row(path: Path, expected_values: int) -> list[float]:
     raise ValueError(f"No numeric row with {expected_values} values in {path}")
 
 
+def _try_read_last_numeric_row(path: Path, expected_values: int) -> list[float] | None:
+    """Read last numeric row, returning None if file missing or unparseable."""
+    if not path.exists():
+        return None
+    try:
+        return _read_last_numeric_row(path, expected_values)
+    except ValueError:
+        return None
+
+
+_STRESS_CASES: list[tuple[str, str, list[str]]] = [
+    (
+        "stress_high_gravity_leo",
+        "stress_high_gravity_leo_results.txt",
+        ["startSMA", "endSMA", "startECC", "endECC", "startAOP", "endAOP", "elapsedDays"],
+    ),
+    (
+        "stress_drag_decay_vleo",
+        "stress_drag_decay_vleo_results.txt",
+        ["startSMA", "endSMA", "startECC", "endECC", "startALT", "endALT", "elapsedDays"],
+    ),
+    (
+        "stress_srp_geo_long_duration",
+        "stress_srp_geo_long_duration_results.txt",
+        ["startSMA", "endSMA", "startECC", "endECC", "startRMAG", "endRMAG", "elapsedDays"],
+    ),
+    (
+        "stress_molniya_thirdbody",
+        "stress_molniya_thirdbody_results.txt",
+        ["startAOP", "endAOP", "startECC", "endECC", "startRAAN", "endRAAN", "elapsedDays"],
+    ),
+    (
+        "stress_cislunar_nrho",
+        "stress_cislunar_nrho_results.txt",
+        ["startMoonRMAG", "endMoonRMAG", "startEarthRMAG", "endEarthRMAG",
+         "startVMAG", "endVMAG", "elapsedDays"],
+    ),
+    (
+        "stress_sun_synch_full_fidelity",
+        "stress_sun_synch_full_fidelity_results.txt",
+        ["startSMA", "endSMA", "startRAAN", "endRAAN", "startECC", "endECC", "elapsedDays"],
+    ),
+    (
+        "stress_jupiter_flyby",
+        "stress_jupiter_flyby_results.txt",
+        ["startECC", "endECC", "startINC", "endINC", "startRMAG", "endRMAG", "elapsedDays"],
+    ),
+    (
+        "stress_rk4_energy_drift",
+        "stress_rk4_energy_drift_results.txt",
+        ["startSMA", "endSMA", "startECC", "endECC", "startRMAG", "endRMAG", "elapsedDays"],
+    ),
+]
+
+
 def export_baseline(run_dir: Path, out_path: Path) -> Path:
     cases = run_dir / "cases"
     basic = _read_last_numeric_row(cases / "basic_leo_two_body" / "basic_leo_two_body_results.txt", 7)
@@ -66,6 +121,11 @@ def export_baseline(run_dir: Path, out_path: Path) -> Path:
             "last": rows[-1] if len(rows) > 1 else "",
         },
     }
+
+    for case_name, report_name, keys in _STRESS_CASES:
+        row = _try_read_last_numeric_row(cases / case_name / report_name, 7)
+        if row is not None:
+            payload["cases"][case_name] = dict(zip(keys, row))
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")

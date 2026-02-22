@@ -1,0 +1,61 @@
+% Stress scenario S4: Lunisolar perturbations on Molniya HEO
+% Targets: Humeris coarse lunar ephemeris, J2 secular-only at critical inclination
+% Classic Molniya orbit (i=63.4 deg), lunisolar + SRP
+
+Create Spacecraft Sat
+Sat.DateFormat = UTCGregorian
+Sat.Epoch = '01 Jan 2024 00:00:00.000'
+Sat.CoordinateSystem = EarthMJ2000Eq
+Sat.DisplayStateType = Keplerian
+Sat.SMA = 26560
+Sat.ECC = 0.74
+Sat.INC = 63.4
+Sat.RAAN = 90
+Sat.AOP = 270
+Sat.TA = 0
+Sat.DryMass = 1500
+Sat.Cr = 1.2
+Sat.SRPArea = 10
+Sat.Cd = 2.2
+Sat.DragArea = 1
+
+Create ForceModel FM
+FM.CentralBody = Earth
+FM.PrimaryBodies = {Earth}
+FM.PointMasses = {Sun, Luna}
+FM.Drag = None
+FM.SRP = On
+FM.ErrorControl = RSSStep
+FM.GravityField.Earth.Degree = 8
+FM.GravityField.Earth.Order = 8
+FM.GravityField.Earth.PotentialFile = 'EGM96.cof'
+FM.GravityField.Earth.TideModel = 'None'
+FM.SRP.Flux = 1367
+FM.SRP.SRPModel = Spherical
+FM.SRP.Nominal_Sun = 149597870.691
+
+Create Propagator Prop
+Prop.FM = FM
+Prop.Type = RungeKutta89
+Prop.InitialStepSize = 60
+Prop.Accuracy = 1e-13
+Prop.MinStep = 0
+Prop.MaxStep = 120
+Prop.MaxStepAttempts = 50
+Prop.StopIfAccuracyIsViolated = true
+
+Create Variable startAOP endAOP startECC endECC startRAAN endRAAN
+Create ReportFile RF
+RF.Filename = 'stress_molniya_thirdbody_results.txt'
+RF.Precision = 16
+RF.WriteHeaders = true
+
+BeginMissionSequence
+startAOP = Sat.AOP
+startECC = Sat.Earth.ECC
+startRAAN = Sat.RAAN
+Propagate Prop(Sat) {Sat.ElapsedDays = 30}
+endAOP = Sat.AOP
+endECC = Sat.Earth.ECC
+endRAAN = Sat.RAAN
+Report RF startAOP endAOP startECC endECC startRAAN endRAAN Sat.ElapsedDays

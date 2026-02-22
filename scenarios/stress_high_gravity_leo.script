@@ -1,0 +1,52 @@
+% Stress scenario S1: High-order gravity field LEO
+% Targets: Humeris gravity truncation (degree 8 vs 70), analytical J2 secular-only
+% ISS-like orbit with EGM96 70x70, no drag/SRP
+
+Create Spacecraft Sat
+Sat.DateFormat = UTCGregorian
+Sat.Epoch = '01 Jan 2024 00:00:00.000'
+Sat.CoordinateSystem = EarthMJ2000Eq
+Sat.DisplayStateType = Keplerian
+Sat.SMA = 6628.137
+Sat.ECC = 0.001
+Sat.INC = 51.6
+Sat.RAAN = 40
+Sat.AOP = 10
+Sat.TA = 0
+
+Create ForceModel FM
+FM.CentralBody = Earth
+FM.PrimaryBodies = {Earth}
+FM.Drag = None
+FM.SRP = Off
+FM.ErrorControl = RSSStep
+FM.GravityField.Earth.Degree = 70
+FM.GravityField.Earth.Order = 70
+FM.GravityField.Earth.PotentialFile = 'EGM96.cof'
+FM.GravityField.Earth.TideModel = 'None'
+
+Create Propagator Prop
+Prop.FM = FM
+Prop.Type = PrinceDormand78
+Prop.InitialStepSize = 30
+Prop.Accuracy = 1e-12
+Prop.MinStep = 0
+Prop.MaxStep = 60
+Prop.MaxStepAttempts = 50
+Prop.StopIfAccuracyIsViolated = true
+
+Create Variable startSMA endSMA startECC endECC startAOP endAOP
+Create ReportFile RF
+RF.Filename = 'stress_high_gravity_leo_results.txt'
+RF.Precision = 16
+RF.WriteHeaders = true
+
+BeginMissionSequence
+startSMA = Sat.Earth.SMA
+startECC = Sat.Earth.ECC
+startAOP = Sat.AOP
+Propagate Prop(Sat) {Sat.ElapsedDays = 14}
+endSMA = Sat.Earth.SMA
+endECC = Sat.Earth.ECC
+endAOP = Sat.AOP
+Report RF startSMA endSMA startECC endECC startAOP endAOP Sat.ElapsedDays

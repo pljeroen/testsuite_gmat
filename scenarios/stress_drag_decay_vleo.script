@@ -1,0 +1,64 @@
+% Stress scenario S2: Dynamic atmospheric drag in LEO
+% Targets: Humeris static drag model, gravity compounds error
+% 400 km altitude, elevated solar activity, MSISE90
+
+Create Spacecraft Sat
+Sat.DateFormat = UTCGregorian
+Sat.Epoch = '01 Jun 2004 12:00:00.000'
+Sat.CoordinateSystem = EarthMJ2000Eq
+Sat.DisplayStateType = Keplerian
+Sat.SMA = 6778.137
+Sat.ECC = 0.001
+Sat.INC = 51.6
+Sat.RAAN = 40
+Sat.AOP = 10
+Sat.TA = 0
+Sat.DryMass = 1000
+Sat.Cd = 2.2
+Sat.DragArea = 20
+Sat.Cr = 1.0
+Sat.SRPArea = 1
+
+Create ForceModel FM
+FM.CentralBody = Earth
+FM.PrimaryBodies = {Earth}
+FM.SRP = Off
+FM.ErrorControl = RSSStep
+FM.GravityField.Earth.Degree = 8
+FM.GravityField.Earth.Order = 8
+FM.GravityField.Earth.PotentialFile = 'EGM96.cof'
+FM.GravityField.Earth.TideModel = 'None'
+FM.Drag.AtmosphereModel = MSISE90
+FM.Drag.HistoricWeatherSource = 'ConstantFluxAndGeoMag'
+FM.Drag.PredictedWeatherSource = 'ConstantFluxAndGeoMag'
+FM.Drag.CSSISpaceWeatherFile = 'SpaceWeather-All-v1.2.txt'
+FM.Drag.SchattenFile = 'SchattenPredict.txt'
+FM.Drag.F107 = 175
+FM.Drag.F107A = 175
+FM.Drag.MagneticIndex = 4
+
+Create Propagator Prop
+Prop.FM = FM
+Prop.Type = PrinceDormand78
+Prop.InitialStepSize = 30
+Prop.Accuracy = 1e-12
+Prop.MinStep = 0
+Prop.MaxStep = 60
+Prop.MaxStepAttempts = 50
+Prop.StopIfAccuracyIsViolated = true
+
+Create Variable startSMA endSMA startECC endECC startALT endALT
+Create ReportFile RF
+RF.Filename = 'stress_drag_decay_vleo_results.txt'
+RF.Precision = 16
+RF.WriteHeaders = true
+
+BeginMissionSequence
+startSMA = Sat.Earth.SMA
+startECC = Sat.Earth.ECC
+startALT = Sat.Earth.RMAG - 6378.137
+Propagate Prop(Sat) {Sat.ElapsedDays = 7}
+endSMA = Sat.Earth.SMA
+endECC = Sat.Earth.ECC
+endALT = Sat.Earth.RMAG - 6378.137
+Report RF startSMA endSMA startECC endECC startALT endALT Sat.ElapsedDays

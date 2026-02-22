@@ -1,0 +1,68 @@
+% Stress scenario S6: Sun-synchronous orbit with all forces
+% Targets: gravity truncation, drag, SRP, coordinate frames, J2 secular-only
+% Sentinel-2-like SSO (700 km, 98.19 deg) with EGM96 50x50 + MSISE90 + SRP + lunisolar
+
+Create Spacecraft Sat
+Sat.DateFormat = UTCGregorian
+Sat.Epoch = '01 Mar 2024 00:00:00.000'
+Sat.CoordinateSystem = EarthMJ2000Eq
+Sat.DisplayStateType = Keplerian
+Sat.SMA = 7078.137
+Sat.ECC = 0.001
+Sat.INC = 98.19
+Sat.RAAN = 0
+Sat.AOP = 0
+Sat.TA = 0
+Sat.DryMass = 1200
+Sat.Cd = 2.2
+Sat.Cr = 1.2
+Sat.DragArea = 15
+Sat.SRPArea = 10
+
+Create ForceModel FM
+FM.CentralBody = Earth
+FM.PrimaryBodies = {Earth}
+FM.PointMasses = {Sun, Luna}
+FM.SRP = On
+FM.ErrorControl = RSSStep
+FM.GravityField.Earth.Degree = 50
+FM.GravityField.Earth.Order = 50
+FM.GravityField.Earth.PotentialFile = 'EGM96.cof'
+FM.GravityField.Earth.TideModel = 'None'
+FM.SRP.Flux = 1367
+FM.SRP.SRPModel = Spherical
+FM.SRP.Nominal_Sun = 149597870.691
+FM.Drag.AtmosphereModel = MSISE90
+FM.Drag.HistoricWeatherSource = 'ConstantFluxAndGeoMag'
+FM.Drag.PredictedWeatherSource = 'ConstantFluxAndGeoMag'
+FM.Drag.CSSISpaceWeatherFile = 'SpaceWeather-All-v1.2.txt'
+FM.Drag.SchattenFile = 'SchattenPredict.txt'
+FM.Drag.F107 = 150
+FM.Drag.F107A = 150
+FM.Drag.MagneticIndex = 3
+
+Create Propagator Prop
+Prop.FM = FM
+Prop.Type = RungeKutta89
+Prop.InitialStepSize = 30
+Prop.Accuracy = 1e-13
+Prop.MinStep = 0
+Prop.MaxStep = 60
+Prop.MaxStepAttempts = 50
+Prop.StopIfAccuracyIsViolated = true
+
+Create Variable startSMA endSMA startRAAN endRAAN startECC endECC
+Create ReportFile RF
+RF.Filename = 'stress_sun_synch_full_fidelity_results.txt'
+RF.Precision = 16
+RF.WriteHeaders = true
+
+BeginMissionSequence
+startSMA = Sat.Earth.SMA
+startRAAN = Sat.RAAN
+startECC = Sat.Earth.ECC
+Propagate Prop(Sat) {Sat.ElapsedDays = 30}
+endSMA = Sat.Earth.SMA
+endRAAN = Sat.RAAN
+endECC = Sat.Earth.ECC
+Report RF startSMA endSMA startRAAN endRAAN startECC endECC Sat.ElapsedDays

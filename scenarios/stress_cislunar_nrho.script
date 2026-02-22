@@ -1,0 +1,75 @@
+% Stress scenario S5: Near-Rectilinear Halo Orbit (NRHO)
+% Targets: Humeris third-body accuracy, coordinate frames, energy drift
+% Earth-Moon L2 NRHO with dual spherical harmonics (Earth 12x12 + Luna 30x30)
+
+Create CoordinateSystem MoonMJ2000Eq
+MoonMJ2000Eq.Origin = Luna
+MoonMJ2000Eq.Axes = MJ2000Eq
+
+Create Spacecraft PropSat
+PropSat.DateFormat = UTCGregorian
+PropSat.Epoch = '1 Jun 2023 00:00:00.000'
+PropSat.CoordinateSystem = MoonMJ2000Eq
+PropSat.DisplayStateType = Cartesian
+PropSat.X = -8992.197
+PropSat.Y = 17505.351
+PropSat.Z = -61412.481
+PropSat.VX = -0.04684787
+PropSat.VY = 0.10867048
+PropSat.VZ = -0.09986946
+PropSat.DryMass = 130
+PropSat.Cd = 2.2
+PropSat.Cr = 1.8
+PropSat.DragArea = 15
+PropSat.SRPArea = 1
+
+Create ForceModel FM
+FM.CentralBody = Earth
+FM.PrimaryBodies = {Earth, Luna}
+FM.PointMasses = {Sun}
+FM.Drag = None
+FM.SRP = Off
+FM.ErrorControl = None
+FM.GravityField.Earth.Degree = 12
+FM.GravityField.Earth.Order = 12
+FM.GravityField.Earth.PotentialFile = 'EGM96.cof'
+FM.GravityField.Earth.TideModel = 'None'
+FM.GravityField.Luna.Degree = 30
+FM.GravityField.Luna.Order = 30
+FM.GravityField.Luna.PotentialFile = 'grgm900c.cof'
+FM.GravityField.Luna.TideModel = 'None'
+
+Create Propagator Prop
+Prop.FM = FM
+Prop.Type = RungeKutta89
+Prop.InitialStepSize = 60
+Prop.Accuracy = 1e-13
+Prop.MinStep = 0
+Prop.MaxStep = 60
+Prop.MaxStepAttempts = 50
+Prop.StopIfAccuracyIsViolated = false
+
+Create Variable startMoonRMAG endMoonRMAG startEarthRMAG endEarthRMAG startVMAG endVMAG
+Create Variable vx vy vz v2
+Create ReportFile RF
+RF.Filename = 'stress_cislunar_nrho_results.txt'
+RF.Precision = 16
+RF.WriteHeaders = true
+
+BeginMissionSequence
+startMoonRMAG = PropSat.Luna.RMAG
+startEarthRMAG = PropSat.Earth.RMAG
+vx = PropSat.MoonMJ2000Eq.VX
+vy = PropSat.MoonMJ2000Eq.VY
+vz = PropSat.MoonMJ2000Eq.VZ
+v2 = vx*vx + vy*vy + vz*vz
+startVMAG = sqrt(v2)
+Propagate Prop(PropSat) {PropSat.ElapsedDays = 14}
+endMoonRMAG = PropSat.Luna.RMAG
+endEarthRMAG = PropSat.Earth.RMAG
+vx = PropSat.MoonMJ2000Eq.VX
+vy = PropSat.MoonMJ2000Eq.VY
+vz = PropSat.MoonMJ2000Eq.VZ
+v2 = vx*vx + vy*vy + vz*vz
+endVMAG = sqrt(v2)
+Report RF startMoonRMAG endMoonRMAG startEarthRMAG endEarthRMAG startVMAG endVMAG PropSat.ElapsedDays
